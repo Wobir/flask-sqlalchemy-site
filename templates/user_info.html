@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация пользователя {{user.username}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/users.css')}}">
+</head>
+<body>
+    <div class="user-info">
+        <div class="user-block">
+            <img src="{{url_for('static', filename='images/'+user.logo)}}" width="100px" height="100px">
+            <div class="user-text-info">
+                <h1>Имя пользователя: {{user.username}}</h1>
+                <h2>Email пользователя: {{user.email}}</h2>
+                <h3>Возраст пользователя: {{user.age}}</h3>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

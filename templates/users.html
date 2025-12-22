@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/users.css')}}">
+</head>
+<body>
+    <div class="users">
+        {% for user in users %}
+            <a href="/user/{{user.id}}">
+                <div class="user-block">
+                    <img src="{{url_for('static', filename='images/'+user.logo)}}" width="100px" height="100px">
+                    <div class="user-text-info">
+                        <h1>{{user.username}}</h1>
+                        <h2>{{user.email}}</h2>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</body>
+</html>
