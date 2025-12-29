@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href={{ url_for('static', filename="css/register.css")}}>
 </head>
 <body>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="text" placeholder="Username" name="username">
-        <input type="email" placeholder="email" name="email">
-        <input type="password" placeholder="password" name="password">
-        <input type="number" placeholder="age" name="age">
-        <input type="file" name="logo">
-        <button type="submit">Отправить</button>
-    </form>
+    {% if session.user_id%}
+    <p> Вы вошли как: {{user.username}}</p>
+    <a href="{{url_for('logout')}}">Выйти</a>
+    {% else %}
+    <a href="{{url_for('login')}}">Войти</a>
+    {% endif %}
+
+    {% for post in posts%}
+        <div class="post">
+            {% if post.image %}
+            <img src="{{url_for('static', filename='images/'+post.image)}}" alt="Пост">
+            {% endif %}
+            <span>{{post.caption}}</span>
+        </div>
+    {% endfor %}
 </body>
 </html>
