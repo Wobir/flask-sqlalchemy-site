@@ -1,7 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
+import os
+
 app = Flask(__name__)
+
+UPLOAD_FOLDER = os.path.join('static', 'images')
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return ('.' in filename) and (filename.split('.', 1)[1].lower() in ALLOWED_EXTENSIONS)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.db"
 
@@ -33,12 +43,26 @@ def index():
         if User.query.filter_by(email=email).first():
             return render_template("index.html")
 
-        new_user = User(username = username, email = email, password = password, age = age)
+        logo_filename = "default.jpeg"
+
+        if 'logo' in request.files:
+            file = request.files['logo']
+            if file and file.filename != '' and allowed_file(file.filename):
+                logo_filename = file.filename
+                file.save(os.path.join(app.config["UPLOAD_FOLDER"], logo_filename))
+
+        new_user = User(
+            username = username,
+            email = email,
+            password = password,
+            age = age,
+            logo = logo_filename
+        )
         db.session.add(new_user)
         db.session.commit()
-        user = User.query.filter_by(username=username).first()
-        #return render_template("user_info.html", user=user)
-        return redirect(url_for(F"user/{user.id}"))
+
+        return redirect(url_for('show_user', id=new_user.id))
+
     return  render_template("index.html")
 
 @app.route("/users/")
