@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css')}}">
 </head>
 <body>
-  <form method="POST">
+    <form method="POST">
         {{ form.csrf_token() }}
         {% for field in form if field.name != "csrf_token" %}
         <p> {{ field }}
@@ -15,10 +15,6 @@
             {% endfor %}
         </p>
         {% endfor %}
-  </form>
-  {% if error %}
-    <p style="color: red;">{{ error }}</p>
-  {% endif %}
-
+    </form>
 </body>
 </html>
